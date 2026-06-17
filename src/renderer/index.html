@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenDeck</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-chrome">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <div class="brand__copy">
+            <strong>OpenDeck</strong>
+            <span>Desktop Controller</span>
+          </div>
+        </div>
+
+        <div class="chrome-actions">
+          <button class="control-button control-button--secondary" id="reload-plugins-button" type="button">
+            Reload Plugins
+          </button>
+          <button class="control-button" id="rescan-button" type="button">Rescan Hardware</button>
+        </div>
+      </header>
+
+      <div class="app-toolbar">
+        <div class="toolbar-group">
+          <div class="toolbar-block">
+            <span class="toolbar-label">Deck</span>
+            <strong id="deck-title">Stream Deck</strong>
+          </div>
+          <div class="toolbar-block">
+            <span class="toolbar-label">Profile</span>
+            <strong id="deck-mode">Default Profile</strong>
+          </div>
+        </div>
+
+        <div class="toolbar-group toolbar-group--status">
+          <span class="status-chip" id="device-status">Checking hardware...</span>
+          <span class="status-chip" id="obs-status-badge">OBS offline</span>
+        </div>
+      </div>
+
+      <div class="workspace">
+        <section class="editor-column">
+          <main class="stage">
+            <div class="stage__header">
+              <div class="stage-copy">
+                <p class="stage-copy__eyebrow">Deck Canvas</p>
+                <p class="stage-copy__meta" id="deck-copy">
+                  The editor mirrors the connected Stream Deck model and keeps the layout centered while you assign keys.
+                </p>
+              </div>
+            </div>
+
+            <div class="stage__body">
+              <div class="stage-surface">
+                <div class="deck-viewport">
+                  <div class="deck-grid" id="deck-grid"></div>
+
+                  <div class="deck-pager" aria-hidden="true">
+                    <span class="deck-pager__button"></span>
+                    <span class="deck-pager__page">1</span>
+                    <span class="deck-pager__button deck-pager__button--plus"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="stage__footer">
+              <p class="selection-hint" id="selection-hint">Select a key to configure its action.</p>
+              <p class="feedback-message" id="feedback-message">Ready.</p>
+            </div>
+          </main>
+
+          <section class="config-dock">
+            <div class="dock-header">
+              <div>
+                <p class="rail-kicker">Selected Key</p>
+                <h2 id="selection-badge">No key selected</h2>
+              </div>
+            </div>
+
+            <div class="inspector-content" id="inspector-content">
+              <p class="empty-state">Select a key to inspect it, configure an action, and test it before going live.</p>
+            </div>
+          </section>
+        </section>
+
+        <aside class="right-rail">
+          <section class="rail-panel rail-panel--search">
+            <label class="search-field">
+              <span class="search-field__icon" aria-hidden="true"></span>
+              <input id="action-search-input" type="search" placeholder="Search actions or plugins" />
+            </label>
+
+            <div class="tab-row" role="tablist" aria-label="Right rail views">
+              <button class="tab-button tab-button--active" id="keys-tab-button" type="button" role="tab" aria-selected="true">
+                Keys
+              </button>
+              <button class="tab-button" id="plugins-tab-button" type="button" role="tab" aria-selected="false">
+                Plugins
+              </button>
+            </div>
+          </section>
+
+          <section class="rail-panel" id="keys-panel">
+            <div class="rail-panel__heading">
+              <div>
+                <p class="rail-kicker">Keys</p>
+                <h2>Action Browser</h2>
+              </div>
+              <span class="rail-badge" id="plugin-count">0 actions</span>
+            </div>
+
+            <div class="plugin-list" id="plugin-list"></div>
+          </section>
+
+          <section class="rail-panel u-hidden" id="plugins-panel">
+            <div class="rail-panel__heading">
+              <div>
+                <p class="rail-kicker">Installed Plugins</p>
+                <h2>Plugin Folders</h2>
+              </div>
+            </div>
+
+            <div class="plugin-directory-list" id="plugin-directory-list"></div>
+          </section>
+
+          <section class="rail-panel rail-panel--obs">
+            <div class="rail-panel__heading">
+              <div>
+                <p class="rail-kicker">OBS Studio</p>
+                <h2>Connection</h2>
+              </div>
+            </div>
+
+            <label class="field-group">
+              <span>WebSocket URL</span>
+              <input id="obs-url-input" type="text" placeholder="ws://127.0.0.1:4455" />
+            </label>
+
+            <label class="field-group">
+              <span>Password</span>
+              <input id="obs-password-input" type="password" placeholder="Optional password" />
+            </label>
+
+            <div class="button-row">
+              <button class="control-button" id="obs-connect-button" type="button">Save and Connect</button>
+              <button class="control-button control-button--secondary" id="obs-refresh-scenes-button" type="button">
+                Refresh Scenes
+              </button>
+              <button class="control-button control-button--secondary" id="obs-disconnect-button" type="button">
+                Disconnect
+              </button>
+            </div>
+
+            <p class="obs-meta-text" id="obs-meta-text">Auto-connect uses the OBS WebSocket server when it is available.</p>
+          </section>
+        </aside>
+      </div>
+    </div>
+
+    <script type="module" src="./main.mjs"></script>
+  </body>
+</html>

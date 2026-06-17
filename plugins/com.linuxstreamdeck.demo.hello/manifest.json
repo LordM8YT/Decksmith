@@ -1,0 +1,22 @@
+{
+  "id": "com.linuxstreamdeck.demo.hello",
+  "name": "Hello Actions",
+  "version": "0.1.0",
+  "description": "Sample plugin showing the minimal action contract for OpenDeck.",
+  "actions": [
+    {
+      "id": "hello-world",
+      "name": "Hello World",
+      "description": "A sample action that logs which key fired the plugin callback.",
+      "defaultLabel": "HELLO",
+      "accentColor": "#ff9b57"
+    },
+    {
+      "id": "focus-mode",
+      "name": "Focus Mode",
+      "description": "A second sample action with a different label and accent palette.",
+      "defaultLabel": "FOCUS",
+      "accentColor": "#3dd9c1"
+    }
+  ]
+}

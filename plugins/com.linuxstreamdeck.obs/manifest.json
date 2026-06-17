@@ -1,0 +1,15 @@
+{
+  "id": "com.linuxstreamdeck.obs",
+  "name": "OBS Studio",
+  "version": "0.1.0",
+  "description": "Built-in OBS Studio actions for live scene switching over obs-websocket.",
+  "actions": [
+    {
+      "id": "scene-switch",
+      "name": "Switch Scene",
+      "description": "Switch OBS to the configured scene.",
+      "defaultLabel": "SCENE",
+      "accentColor": "#ff5d73"
+    }
+  ]
+}

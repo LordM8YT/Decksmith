@@ -1,0 +1,113 @@
+{
+  "name": "linux-stream-deck-app",
+  "version": "0.1.0-alpha.1",
+  "description": "Linux-first open source Stream Deck desktop app alpha with a simple plugin API.",
+  "homepage": "https://github.com/LordM8YT/Linux-Stream-Deck-App",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LordM8YT/Linux-Stream-Deck-App.git"
+  },
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "check": "node tools/check-syntax.js",
+    "install:app-deps": "electron-builder install-app-deps",
+    "dist:linux": "electron-builder --linux AppImage rpm",
+    "dist:linux:fedora": "electron-builder --linux rpm AppImage",
+    "dist:linux:dir": "electron-builder --linux dir"
+  },
+  "keywords": [
+    "stream-deck",
+    "electron",
+    "linux",
+    "plugins",
+    "hid"
+  ],
+  "desktopName": "opendeck.desktop",
+  "author": "Patri",
+  "license": "GPL-3.0-or-later",
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "@elgato-stream-deck/node": "^7.6.3",
+    "obs-websocket-js": "^5.0.8"
+  },
+  "devDependencies": {
+    "electron": "42.4.1",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.linuxstreamdeck.opendeck",
+    "productName": "OpenDeck",
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "src/**/*",
+      "plugins/**/*",
+      "linux/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "linux/udev",
+        "to": "linux/udev"
+      },
+      {
+        "from": "docs/linux-compatibility.md",
+        "to": "docs/linux-compatibility.md"
+      }
+    ],
+    "npmRebuild": false,
+    "asarUnpack": [
+      "node_modules/**/*.node"
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "rpm"
+      ],
+      "syncDesktopName": true,
+      "executableName": "opendeck",
+      "category": "Utility",
+      "synopsis": "Open source Stream Deck control app for Linux creators.",
+      "description": "OpenDeck is a Linux-first alpha alternative to the Elgato Stream Deck app with a polished desktop editor, live OBS scene switching, and a simple JavaScript plugin API.",
+      "maintainer": "Patri",
+      "vendor": "OpenDeck",
+      "icon": "build/icon.svg",
+      "desktop": {
+        "entry": {
+          "Name": "OpenDeck",
+          "Comment": "Open source Stream Deck controller for Linux creators",
+          "Categories": "AudioVideo;Utility;",
+          "Keywords": "streamdeck;obs;creator;linux;macro;",
+          "StartupWMClass": "opendeck",
+          "Terminal": "false",
+          "Type": "Application"
+        }
+      }
+    },
+    "rpm": {
+      "packageName": "opendeck",
+      "depends": [
+        "gtk3",
+        "libnotify",
+        "nss",
+        "libXScrnSaver",
+        "xdg-utils",
+        "at-spi2-core"
+      ],
+      "packageCategory": "Applications/Multimedia",
+      "afterInstall": "build/linux/rpm/after-install.sh",
+      "afterRemove": "build/linux/rpm/after-remove.sh"
+    },
+    "appImage": {
+      "artifactName": "${productName}-${version}-linux-${arch}.AppImage"
+    }
+  }
+}

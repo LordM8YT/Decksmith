@@ -1,0 +1,6 @@
+node_modules/
+dist/
+package/
+tmp-core/
+*.tgz
+npm-debug.log*
