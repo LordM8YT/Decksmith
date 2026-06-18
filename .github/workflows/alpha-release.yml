@@ -2,6 +2,11 @@ name: Alpha Release
 
 on:
   workflow_dispatch:
+    inputs:
+      build_windows:
+        description: Build a fresh Windows artifact too
+        required: false
+        default: "false"
   push:
     tags:
       - "v*"
@@ -47,6 +52,7 @@ jobs:
             dist/latest-linux.yml
 
   build-windows-alpha:
+    if: github.event_name == 'workflow_dispatch' && inputs.build_windows == 'true'
     runs-on: windows-latest
 
     steps:
@@ -82,14 +88,72 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     needs:
       - build-linux-alpha
-      - build-windows-alpha
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download all packaged artifacts
+      - name: Download Linux packaged artifacts
         uses: actions/download-artifact@v4
         with:
+          name: opendeck-linux-alpha
           path: release-artifacts
+
+      - name: Download latest Windows artifact from repository history
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import pathlib
+          import urllib.request
+          import zipfile
+
+          repo = os.environ["GITHUB_REPOSITORY"]
+          token = os.environ["GITHUB_TOKEN"]
+          release_root = pathlib.Path("release-artifacts/windows")
+          release_root.mkdir(parents=True, exist_ok=True)
+
+          api_url = f"https://api.github.com/repos/{repo}/actions/artifacts?per_page=100"
+          request = urllib.request.Request(
+              api_url,
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Accept": "application/vnd.github+json"
+              }
+          )
+
+          with urllib.request.urlopen(request) as response:
+              payload = json.load(response)
+
+          artifacts = [
+              artifact for artifact in payload.get("artifacts", [])
+              if artifact.get("name") == "opendeck-windows-alpha" and not artifact.get("expired")
+          ]
+
+          if not artifacts:
+              print("No reusable Windows artifact found. Continuing with Linux-only release assets.")
+              raise SystemExit(0)
+
+          artifact = artifacts[0]
+          download_request = urllib.request.Request(
+              artifact["archive_download_url"],
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Accept": "application/vnd.github+json"
+              }
+          )
+
+          zip_path = release_root / "windows-artifact.zip"
+          with urllib.request.urlopen(download_request) as response, open(zip_path, "wb") as output_file:
+              output_file.write(response.read())
+
+          with zipfile.ZipFile(zip_path, "r") as archive:
+              archive.extractall(release_root)
+
+          zip_path.unlink()
+          print(f"Downloaded Windows artifact {artifact['id']} from {artifact['created_at']}.")
+          PY
 
       - name: Publish GitHub pre-release
         uses: softprops/action-gh-release@v2

@@ -13,10 +13,10 @@
     "dev": "electron .",
     "check": "node tools/check-syntax.js",
     "install:app-deps": "electron-builder install-app-deps",
-    "dist:linux": "electron-builder --linux AppImage rpm",
-    "dist:linux:fedora": "electron-builder --linux rpm AppImage",
-    "dist:linux:dir": "electron-builder --linux dir",
-    "dist:win": "electron-builder --win portable"
+    "dist:linux": "electron-builder --linux AppImage rpm --publish never",
+    "dist:linux:fedora": "electron-builder --linux rpm AppImage --publish never",
+    "dist:linux:dir": "electron-builder --linux dir --publish never",
+    "dist:win": "electron-builder --win portable --publish never"
   },
   "keywords": [
     "stream-deck",
