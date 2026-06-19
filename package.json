@@ -1,6 +1,6 @@
 {
-  "name": "linux-stream-deck-app",
-  "version": "0.1.0-alpha.4",
+  "name": "decksmith",
+  "version": "0.1.0-alpha",
   "description": "Linux-first open source Stream Deck desktop app alpha with a simple plugin API.",
   "homepage": "https://github.com/LordM8YT/Linux-Stream-Deck-App",
   "repository": {
@@ -25,7 +25,7 @@
     "plugins",
     "hid"
   ],
-  "desktopName": "opendeck.desktop",
+  "desktopName": "decksmith.desktop",
   "author": "Patri",
   "license": "GPL-3.0-or-later",
   "engines": {
@@ -40,8 +40,8 @@
     "electron-builder": "26.15.3"
   },
   "build": {
-    "appId": "com.linuxstreamdeck.opendeck",
-    "productName": "OpenDeck",
+    "appId": "io.decksmith.app",
+    "productName": "Decksmith",
     "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
     "directories": {
       "buildResources": "build",
@@ -74,27 +74,27 @@
         "rpm"
       ],
       "syncDesktopName": true,
-      "executableName": "opendeck",
+      "executableName": "decksmith",
       "category": "Utility",
       "synopsis": "Open source Stream Deck control app for Linux creators.",
-      "description": "OpenDeck is a Linux-first alpha alternative to the Elgato Stream Deck app with a polished desktop editor, built-in core actions, live OBS control, and a simple JavaScript plugin API.",
+      "description": "Decksmith is a Linux-first alpha alternative to the Elgato Stream Deck app with a polished desktop editor, built-in core actions, live OBS control, and a simple JavaScript plugin API.",
       "maintainer": "Patri",
-      "vendor": "OpenDeck",
+      "vendor": "Decksmith",
       "icon": "build/icon.svg",
       "desktop": {
         "entry": {
-          "Name": "OpenDeck",
+          "Name": "Decksmith",
           "Comment": "Open source Stream Deck controller for Linux creators",
           "Categories": "AudioVideo;Utility;",
           "Keywords": "streamdeck;obs;creator;linux;macro;",
-          "StartupWMClass": "opendeck",
+          "StartupWMClass": "decksmith",
           "Terminal": "false",
           "Type": "Application"
         }
       }
     },
     "rpm": {
-      "packageName": "opendeck",
+      "packageName": "decksmith",
       "depends": [
         "gtk3",
         "libnotify",
@@ -114,7 +114,7 @@
       "target": [
         "portable"
       ],
-      "executableName": "OpenDeck"
+      "executableName": "Decksmith"
     }
   }
 }

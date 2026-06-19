@@ -1,12 +1,12 @@
 #!/bin/sh
 set -eu
 
-RULE_TARGET="/usr/lib/udev/rules.d/60-opendeck-user.rules"
-RULE_TARGET_ETC="/etc/udev/rules.d/60-opendeck-user.rules"
-MARKER="# Managed by OpenDeck alpha RPM"
+RULE_TARGET="/usr/lib/udev/rules.d/60-decksmith-user.rules"
+RULE_TARGET_ETC="/etc/udev/rules.d/60-decksmith-user.rules"
+MARKER="# Managed by Decksmith alpha RPM"
 
 RULE_CONTENT=$(cat <<'EOF'
-# Managed by OpenDeck alpha RPM
+# Managed by Decksmith alpha RPM
 SUBSYSTEM=="input", GROUP="input", MODE="0660"
 
 KERNEL=="hidraw*", ATTRS{idVendor}=="0fd9", ATTRS{idProduct}=="0060", MODE:="660", TAG+="uaccess"
@@ -34,13 +34,13 @@ install_rule() {
   target="$1"
 
   if [ -f "$target" ] && ! grep -q "$MARKER" "$target"; then
-    echo "OpenDeck RPM: leaving existing custom udev rule untouched at $target"
+    echo "Decksmith RPM: leaving existing custom udev rule untouched at $target"
     return
   fi
 
   printf '%s\n' "$RULE_CONTENT" > "$target"
   chmod 0644 "$target"
-  echo "OpenDeck RPM: installed udev access rule at $target"
+  echo "Decksmith RPM: installed udev access rule at $target"
 }
 
 if [ -d "/usr/lib/udev/rules.d" ]; then
@@ -54,4 +54,4 @@ if command -v udevadm >/dev/null 2>&1; then
   udevadm trigger || true
 fi
 
-echo "OpenDeck RPM: reconnect the Stream Deck if the device does not appear immediately."
+echo "Decksmith RPM: reconnect the Stream Deck if the device does not appear immediately."

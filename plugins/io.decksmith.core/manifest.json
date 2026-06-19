@@ -1,8 +1,8 @@
 {
-  "id": "com.linuxstreamdeck.core",
+  "id": "io.decksmith.core",
   "name": "Core Actions",
   "version": "0.1.0",
-  "description": "Built-in OpenDeck actions for URLs, app launching, and shell commands.",
+  "description": "Built-in Decksmith actions for URLs, app launching, and shell commands.",
   "actions": [
     {
       "id": "open-url",

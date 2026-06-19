@@ -1,6 +1,6 @@
 # Fedora Alpha Guide
 
-This repo now includes a Fedora-friendly alpha packaging path for OpenDeck.
+This repo now includes a Fedora-friendly alpha packaging path for Decksmith.
 
 ## Current status
 
@@ -41,7 +41,7 @@ npm run install:app-deps
 ## Install on Fedora
 
 ```bash
-sudo dnf install ./dist/OpenDeck-0.1.0-alpha.4-linux-x86_64.rpm
+sudo dnf install ./dist/Decksmith-0.1.0-alpha-linux-x86_64.rpm
 ```
 
 The RPM post-install script attempts to install an `udev` access rule automatically and reload the rules.
@@ -50,13 +50,13 @@ If the Stream Deck still does not appear:
 
 1. Unplug and reconnect the Stream Deck.
 2. Log out and back in if your session still does not pick up the new `uaccess` permissions.
-3. Verify the rule exists at `/usr/lib/udev/rules.d/60-opendeck-user.rules` or `/etc/udev/rules.d/60-opendeck-user.rules`.
+3. Verify the rule exists at `/usr/lib/udev/rules.d/60-decksmith-user.rules` or `/etc/udev/rules.d/60-decksmith-user.rules`.
 
 ## AppImage fallback
 
 ```bash
-chmod +x ./dist/OpenDeck-0.1.0-alpha.4-linux-x86_64.AppImage
-./dist/OpenDeck-0.1.0-alpha.4-linux-x86_64.AppImage
+chmod +x ./dist/Decksmith-0.1.0-alpha-linux-x86_64.AppImage
+./dist/Decksmith-0.1.0-alpha-linux-x86_64.AppImage
 ```
 
 The AppImage is great for quick streaming tests, but it does not install `udev` rules system-wide by itself. If hardware access fails, use the rules in `linux/udev/`.

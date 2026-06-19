@@ -84,7 +84,7 @@ function createRunCommandAction() {
         type: 'text',
         description: 'Run a shell command. Keep it short and predictable for live use.',
         defaultValue: '',
-        placeholder: 'echo OpenDeck'
+        placeholder: 'echo Decksmith'
       },
       {
         id: 'workingDirectory',
@@ -98,7 +98,7 @@ function createRunCommandAction() {
         id: 'timeoutMs',
         label: 'Timeout (ms)',
         type: 'number',
-        description: 'How long OpenDeck should wait before failing the command.',
+        description: 'How long Decksmith should wait before failing the command.',
         defaultValue: 15000,
         placeholder: '15000'
       }

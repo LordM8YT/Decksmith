@@ -1,6 +1,6 @@
 # Linux Compatibility Notes
 
-OpenDeck is being shaped to run well across mainstream Linux desktop distributions, especially:
+Decksmith is being shaped to run well across mainstream Linux desktop distributions, especially:
 
 - Ubuntu and Ubuntu-based distros
 - Fedora
@@ -15,22 +15,22 @@ The most portable default for desktop Linux is `TAG+="uaccess"` through `udev`, 
 
 Use:
 
-- `linux/udev/60-opendeck-user.rules`
+- `linux/udev/60-decksmith-user.rules`
 
 ### 2. Headless or service deployments
 
-Some users will want to run OpenDeck as a background daemon or from a service account. Group names vary by distro, so the repo includes:
+Some users will want to run Decksmith as a background daemon or from a service account. Group names vary by distro, so the repo includes:
 
-- `linux/udev/60-opendeck-headless.rules.example`
+- `linux/udev/60-decksmith-headless.rules.example`
 
-That example uses a dedicated `opendeck` group instead of `plugdev`, which is more portable across distros.
+That example uses a dedicated `decksmith` group instead of `plugdev`, which is more portable across distros.
 
 Suggested flow:
 
 ```bash
-sudo groupadd --system opendeck
-sudo usermod -aG opendeck "$USER"
-sudo cp linux/udev/60-opendeck-headless.rules.example /etc/udev/rules.d/60-opendeck-headless.rules
+sudo groupadd --system decksmith
+sudo usermod -aG decksmith "$USER"
+sudo cp linux/udev/60-decksmith-headless.rules.example /etc/udev/rules.d/60-decksmith-headless.rules
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 ```

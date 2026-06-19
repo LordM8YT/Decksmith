@@ -595,7 +595,7 @@ function buildSetupHint(error) {
   }
 
   if (message.toLowerCase().includes('authentication')) {
-    return 'Open OBS > Tools > WebSocket Server Settings and copy the same server password into OpenDeck.';
+    return 'Open OBS > Tools > WebSocket Server Settings and copy the same server password into Decksmith.';
   }
 
   return 'Verify OBS is running with its WebSocket server enabled, then try reconnecting.';

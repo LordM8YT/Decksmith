@@ -49,7 +49,7 @@ const dragState = {
 
 function getAppApi() {
   if (!window.streamDeckApp) {
-    throw new Error('OpenDeck desktop bridge failed to load. Restart the app. If it still fails, the Electron preload bridge is not available.');
+    throw new Error('Decksmith desktop bridge failed to load. Restart the app. If it still fails, the Electron preload bridge is not available.');
   }
 
   return window.streamDeckApp;
@@ -68,7 +68,7 @@ async function bootstrapApp() {
     state.data = createFallbackBootstrapState();
     ensureSelectionIsValid();
     renderApp();
-    setFeedback('Desktop bridge is unavailable right now, so OpenDeck is showing a local UI preview instead of the live app state.', true);
+    setFeedback('Desktop bridge is unavailable right now, so Decksmith is showing a local UI preview instead of the live app state.', true);
   }
 }
 
@@ -88,7 +88,7 @@ elements.pluginPreviewButton.addEventListener('click', async () => {
   const sourceUrl = elements.pluginImportInput.value.trim();
 
   if (!sourceUrl) {
-    setFeedback('Paste a plugin URL first so OpenDeck can inspect it.', true);
+    setFeedback('Paste a plugin URL first so Decksmith can inspect it.', true);
     return;
   }
 
@@ -111,7 +111,7 @@ elements.pluginImportButton.addEventListener('click', async () => {
   const sourceUrl = elements.pluginImportInput.value.trim();
 
   if (!sourceUrl) {
-    setFeedback('Paste a plugin URL first so OpenDeck can import it.', true);
+    setFeedback('Paste a plugin URL first so Decksmith can import it.', true);
     return;
   }
 
@@ -263,7 +263,7 @@ function renderDeckSummary() {
   elements.deckMode.textContent = deck.profile.isMock ? 'Default Profile' : 'Live Hardware Profile';
 
   const description = deck.profile.isMock
-    ? `No hardware is connected right now, so OpenDeck is showing a mock ${layoutLabel} layout for setup and testing.`
+    ? `No hardware is connected right now, so Decksmith is showing a mock ${layoutLabel} layout for setup and testing.`
     : `${deck.profile.productName} is connected. The editor grid, key sizing, and assignment layout now follow this device automatically.`;
   const setupHint = deck.setupHints?.[0];
 
@@ -940,11 +940,11 @@ function buildLibrarySections(query) {
 }
 
 function splitPluginIntoSections(plugin) {
-  if (plugin.id === 'com.linuxstreamdeck.core') {
+  if (plugin.id === 'io.decksmith.core') {
     return buildCoreActionSections(plugin);
   }
 
-  if (plugin.id === 'com.linuxstreamdeck.obs') {
+  if (plugin.id === 'io.decksmith.obs') {
     return buildObsActionSections(plugin);
   }
 
@@ -1112,7 +1112,7 @@ function getPlugin(pluginId) {
 
 function getPluginSourceText(plugin) {
   if (!plugin.source?.sourceUrl) {
-    return 'Bundled with OpenDeck.';
+    return 'Bundled with Decksmith.';
   }
 
   const importedAt = plugin.source.importedAt
@@ -1192,15 +1192,15 @@ function createFallbackBootstrapState() {
 
   const plugins = [
     {
-      id: 'com.linuxstreamdeck.obs',
+      id: 'io.decksmith.obs',
       name: 'OBS Studio',
       version: '0.1.0',
       description: 'OBS scenes, audio, streaming, recording, and studio mode controls.',
-      root: 'plugins/com.linuxstreamdeck.obs',
+      root: 'plugins/io.decksmith.obs',
       actions: [
         {
-          qualifiedId: 'com.linuxstreamdeck.obs:scene-switch',
-          pluginId: 'com.linuxstreamdeck.obs',
+          qualifiedId: 'io.decksmith.obs:scene-switch',
+          pluginId: 'io.decksmith.obs',
           id: 'scene-switch',
           name: 'Switch Scene',
           description: 'Switch directly to a chosen OBS scene.',
@@ -1221,8 +1221,8 @@ function createFallbackBootstrapState() {
           ]
         },
         {
-          qualifiedId: 'com.linuxstreamdeck.obs:toggle-input-mute',
-          pluginId: 'com.linuxstreamdeck.obs',
+          qualifiedId: 'io.decksmith.obs:toggle-input-mute',
+          pluginId: 'io.decksmith.obs',
           id: 'toggle-input-mute',
           name: 'Toggle Input Mute',
           description: 'Toggle mute for a selected OBS input.',
@@ -1244,8 +1244,8 @@ function createFallbackBootstrapState() {
           ]
         },
         {
-          qualifiedId: 'com.linuxstreamdeck.obs:start-stream',
-          pluginId: 'com.linuxstreamdeck.obs',
+          qualifiedId: 'io.decksmith.obs:start-stream',
+          pluginId: 'io.decksmith.obs',
           id: 'start-stream',
           name: 'Start Streaming',
           description: 'Start the OBS stream output.',
@@ -1255,8 +1255,8 @@ function createFallbackBootstrapState() {
           configFields: []
         },
         {
-          qualifiedId: 'com.linuxstreamdeck.obs:start-record',
-          pluginId: 'com.linuxstreamdeck.obs',
+          qualifiedId: 'io.decksmith.obs:start-record',
+          pluginId: 'io.decksmith.obs',
           id: 'start-record',
           name: 'Start Recording',
           description: 'Start the OBS recording output.',
@@ -1266,8 +1266,8 @@ function createFallbackBootstrapState() {
           configFields: []
         },
         {
-          qualifiedId: 'com.linuxstreamdeck.obs:studio-transition',
-          pluginId: 'com.linuxstreamdeck.obs',
+          qualifiedId: 'io.decksmith.obs:studio-transition',
+          pluginId: 'io.decksmith.obs',
           id: 'studio-transition',
           name: 'Trigger Studio Transition',
           description: 'Trigger the active studio mode transition.',
@@ -1277,8 +1277,8 @@ function createFallbackBootstrapState() {
           configFields: []
         },
         {
-          qualifiedId: 'com.linuxstreamdeck.obs:toggle-source-visibility',
-          pluginId: 'com.linuxstreamdeck.obs',
+          qualifiedId: 'io.decksmith.obs:toggle-source-visibility',
+          pluginId: 'io.decksmith.obs',
           id: 'toggle-source-visibility',
           name: 'Toggle Source Visibility',
           description: 'Toggle visibility for a source inside a selected scene.',
@@ -1313,15 +1313,15 @@ function createFallbackBootstrapState() {
       ]
     },
     {
-      id: 'com.linuxstreamdeck.core',
+      id: 'io.decksmith.core',
       name: 'Core Actions',
       version: '0.1.0',
-      description: 'Built-in OpenDeck actions for URLs, app launching, and shell commands.',
-      root: 'plugins/com.linuxstreamdeck.core',
+      description: 'Built-in Decksmith actions for URLs, app launching, and shell commands.',
+      root: 'plugins/io.decksmith.core',
       actions: [
         {
-          qualifiedId: 'com.linuxstreamdeck.core:open-url',
-          pluginId: 'com.linuxstreamdeck.core',
+          qualifiedId: 'io.decksmith.core:open-url',
+          pluginId: 'io.decksmith.core',
           id: 'open-url',
           name: 'Open URL',
           description: 'Open a website or custom protocol target from a Stream Deck key.',
@@ -1343,8 +1343,8 @@ function createFallbackBootstrapState() {
           ]
         },
         {
-          qualifiedId: 'com.linuxstreamdeck.core:launch-app',
-          pluginId: 'com.linuxstreamdeck.core',
+          qualifiedId: 'io.decksmith.core:launch-app',
+          pluginId: 'io.decksmith.core',
           id: 'launch-app',
           name: 'Launch App',
           description: 'Launch an installed application or executable path in the background.',
@@ -1388,8 +1388,8 @@ function createFallbackBootstrapState() {
           ]
         },
         {
-          qualifiedId: 'com.linuxstreamdeck.core:run-command',
-          pluginId: 'com.linuxstreamdeck.core',
+          qualifiedId: 'io.decksmith.core:run-command',
+          pluginId: 'io.decksmith.core',
           id: 'run-command',
           name: 'Run Command',
           description: 'Run a shell command directly from a key and wait for it to finish.',
@@ -1403,7 +1403,7 @@ function createFallbackBootstrapState() {
               type: 'text',
               description: 'Run a shell command. Keep it short and predictable for live use.',
               defaultValue: '',
-              placeholder: 'echo OpenDeck',
+              placeholder: 'echo Decksmith',
               optionsSource: null,
               options: [],
               resetOnChange: []
@@ -1423,7 +1423,7 @@ function createFallbackBootstrapState() {
               id: 'timeoutMs',
               label: 'Timeout (ms)',
               type: 'number',
-              description: 'How long OpenDeck should wait before failing the command.',
+              description: 'How long Decksmith should wait before failing the command.',
               defaultValue: 15000,
               placeholder: '15000',
               optionsSource: null,
@@ -1439,28 +1439,28 @@ function createFallbackBootstrapState() {
   const actions = plugins.flatMap((plugin) => plugin.actions);
   const assignmentsBySlotId = {
     'button:0': {
-      actionId: 'com.linuxstreamdeck.core:open-url',
+      actionId: 'io.decksmith.core:open-url',
       config: {
         url: 'https://www.twitch.tv/linuxgamerlife'
       },
       assignedAt: new Date().toISOString()
     },
     'button:1': {
-      actionId: 'com.linuxstreamdeck.obs:scene-switch',
+      actionId: 'io.decksmith.obs:scene-switch',
       config: {
         sceneName: 'Gameplay'
       },
       assignedAt: new Date().toISOString()
     },
     'button:2': {
-      actionId: 'com.linuxstreamdeck.obs:toggle-input-mute',
+      actionId: 'io.decksmith.obs:toggle-input-mute',
       config: {
         inputName: 'Microphone'
       },
       assignedAt: new Date().toISOString()
     },
     'button:4': {
-      actionId: 'com.linuxstreamdeck.core:launch-app',
+      actionId: 'io.decksmith.core:launch-app',
       config: {
         command: 'firefox',
         args: '--new-window https://obsproject.com',
@@ -1469,26 +1469,26 @@ function createFallbackBootstrapState() {
       assignedAt: new Date().toISOString()
     },
     'button:7': {
-      actionId: 'com.linuxstreamdeck.obs:start-stream',
+      actionId: 'io.decksmith.obs:start-stream',
       config: {},
       assignedAt: new Date().toISOString()
     },
     'button:8': {
-      actionId: 'com.linuxstreamdeck.obs:start-record',
+      actionId: 'io.decksmith.obs:start-record',
       config: {},
       assignedAt: new Date().toISOString()
     },
     'button:11': {
-      actionId: 'com.linuxstreamdeck.core:run-command',
+      actionId: 'io.decksmith.core:run-command',
       config: {
-        commandLine: 'echo OpenDeck Alpha',
+        commandLine: 'echo Decksmith Alpha',
         workingDirectory: '',
         timeoutMs: 15000
       },
       assignedAt: new Date().toISOString()
     },
     'button:12': {
-      actionId: 'com.linuxstreamdeck.obs:studio-transition',
+      actionId: 'io.decksmith.obs:studio-transition',
       config: {},
       assignedAt: new Date().toISOString()
     }
@@ -1496,12 +1496,12 @@ function createFallbackBootstrapState() {
 
   return {
     app: {
-      name: 'OpenDeck',
+      name: 'Decksmith',
       pluginDirectory: 'plugins',
       bundledPluginDirectory: 'plugins',
       pluginImportExamples: [
         'https://github.com/owner/repo/tree/main/plugin-folder',
-        'https://example.com/opendeck-marketplace.json#plugin-id'
+        'https://example.com/decksmith-marketplace.json#plugin-id'
       ]
     },
     deck: {

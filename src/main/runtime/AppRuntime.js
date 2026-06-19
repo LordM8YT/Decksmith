@@ -14,7 +14,7 @@ class AppRuntime {
     this.bundledPluginsDir = path.join(rootDir, 'plugins');
     this.userPluginsDir = path.join(dataDir, 'plugins');
     this.store = new AppStateStore({
-      filePath: path.join(dataDir, 'opendeck-state.json')
+      filePath: path.join(dataDir, 'decksmith-state.json')
     });
     this.layoutService = new LayoutService({
       store: this.store
@@ -74,13 +74,13 @@ class AppRuntime {
 
     return {
       app: {
-        name: 'OpenDeck',
+        name: 'Decksmith',
         pluginDirectory: this.userPluginsDir,
         bundledPluginDirectory: this.bundledPluginsDir,
         pluginImportExamples: [
           'https://github.com/owner/repo',
           'https://github.com/owner/repo/tree/main/plugin-folder',
-          'https://example.com/opendeck-marketplace.json#plugin-id'
+          'https://example.com/decksmith-marketplace.json#plugin-id'
         ]
       },
       deck: deckState,

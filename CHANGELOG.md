@@ -1,8 +1,14 @@
 # Changelog
 
+## 0.1.0-alpha
+
+- Rebranded the app and bundled plugin namespaces from `OpenDeck` to `Decksmith`.
+- Renamed the Linux package metadata, desktop entry, runtime state file, and bundled `udev` rules to match the new Decksmith brand.
+
 ## 0.1.0-alpha.4
 
-- Switched the GitHub tag release flow to Linux-only so we can unblock the Linux alpha without rerunning Windows packaging.
+- Fixed the GitHub tag release flow so Linux artifacts publish cleanly without Electron Builder trying to auto-publish on its own.
+- Restored the Windows portable build to the same GitHub pre-release so testers can grab both Linux and Windows artifacts from one version tag.
 - Kept Electron Builder packaging on `--publish never` so GitHub releases are handled only by the explicit release step.
 
 ## 0.1.0-alpha.3

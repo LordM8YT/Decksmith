@@ -1,5 +1,5 @@
 {
-  "id": "com.linuxstreamdeck.obs",
+  "id": "io.decksmith.obs",
   "name": "OBS Studio",
   "version": "0.1.0",
   "description": "Built-in OBS Studio actions for scenes, audio, streaming, recording, and studio mode over obs-websocket.",

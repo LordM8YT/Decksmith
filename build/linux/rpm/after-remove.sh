@@ -1,12 +1,12 @@
 #!/bin/sh
 set -eu
 
-MARKER="# Managed by OpenDeck alpha RPM"
+MARKER="# Managed by Decksmith alpha RPM"
 
-for target in /usr/lib/udev/rules.d/60-opendeck-user.rules /etc/udev/rules.d/60-opendeck-user.rules; do
+for target in /usr/lib/udev/rules.d/60-decksmith-user.rules /etc/udev/rules.d/60-decksmith-user.rules; do
   if [ -f "$target" ] && grep -q "$MARKER" "$target"; then
     rm -f "$target"
-    echo "OpenDeck RPM: removed managed udev rule at $target"
+    echo "Decksmith RPM: removed managed udev rule at $target"
   fi
 done
 

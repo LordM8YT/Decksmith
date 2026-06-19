@@ -36,10 +36,10 @@ class PluginImportService {
     const existingPlugin = this.pluginManager.getPlugin(resolved.manifest.id);
 
     if (existingPlugin && !isPathInside(existingPlugin.root, this.userPluginsRoot)) {
-      throw new Error(`Plugin "${resolved.manifest.id}" is already bundled with OpenDeck. Rename the plugin id or import a different plugin.`);
+      throw new Error(`Plugin "${resolved.manifest.id}" is already bundled with Decksmith. Rename the plugin id or import a different plugin.`);
     }
 
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'opendeck-plugin-'));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'decksmith-plugin-'));
     const stagingRoot = path.join(tempRoot, resolved.manifest.id);
     const installRoot = path.join(this.userPluginsRoot, resolved.manifest.id);
 
@@ -52,7 +52,7 @@ class PluginImportService {
         await fs.writeFile(targetPath, content);
       }
 
-      const sourceMetadataPath = path.join(stagingRoot, '.opendeck-source.json');
+      const sourceMetadataPath = path.join(stagingRoot, '.decksmith-source.json');
       await fs.writeFile(sourceMetadataPath, JSON.stringify({
         resolver: resolved.resolver,
         sourceUrl: resolved.sourceUrl,
@@ -96,7 +96,7 @@ async function resolveJsonPluginSource(url, fetchImpl) {
     accept: 'application/json, text/plain;q=0.9, */*;q=0.8'
   });
 
-  if (descriptor?.type === 'opendeck-plugin-source' && typeof descriptor.source?.url === 'string') {
+  if (descriptor?.type === 'decksmith-plugin-source' && typeof descriptor.source?.url === 'string') {
     return resolvePluginSource(descriptor.source.url, fetchImpl);
   }
 
@@ -119,7 +119,7 @@ async function resolveJsonPluginSource(url, fetchImpl) {
     return resolvePluginSource(selectedPlugin.source.url, fetchImpl);
   }
 
-  throw new Error('Unsupported plugin source. Paste a GitHub repository or plugin-folder URL, or an OpenDeck marketplace JSON URL.');
+  throw new Error('Unsupported plugin source. Paste a GitHub repository or plugin-folder URL, or an Decksmith marketplace JSON URL.');
 }
 
 async function resolveGitHubPluginSource(url, fetchImpl) {
@@ -204,7 +204,7 @@ async function parseGitHubPluginLocation(url, fetchImpl) {
     };
   }
 
-  throw new Error('OpenDeck could not resolve that GitHub URL. Paste a repository URL or a direct plugin folder URL.');
+  throw new Error('Decksmith could not resolve that GitHub URL. Paste a repository URL or a direct plugin folder URL.');
 }
 
 function normalizeGitHubPluginPath(candidatePath, contents) {
@@ -256,7 +256,7 @@ async function detectGitHubPluginRoot(owner, repo, ref, fetchImpl) {
     throw new Error(`This repository contains multiple plugin folders (${candidateDirectories.join(', ')}). Paste a direct URL to the plugin folder you want to import.`);
   }
 
-  throw new Error('OpenDeck could not find a plugin folder in that repository. The folder needs at least manifest.json and index.js.');
+  throw new Error('Decksmith could not find a plugin folder in that repository. The folder needs at least manifest.json and index.js.');
 }
 
 function directoryLooksLikePlugin(entries) {
@@ -304,7 +304,7 @@ async function fetchGitHubDefaultBranch(owner, repo, fetchImpl) {
   });
 
   if (typeof repository.default_branch !== 'string' || repository.default_branch.trim() === '') {
-    throw new Error('OpenDeck could not determine the default branch for that GitHub repository.');
+    throw new Error('Decksmith could not determine the default branch for that GitHub repository.');
   }
 
   return repository.default_branch;
@@ -323,7 +323,7 @@ async function fetchGitHubContents(owner, repo, ref, contentPath, fetchImpl, { a
   const response = await fetchImpl(endpoint, {
     headers: {
       Accept: 'application/vnd.github+json',
-      'User-Agent': 'OpenDeck'
+      'User-Agent': 'Decksmith'
     }
   });
 
@@ -342,7 +342,7 @@ async function fetchJson(url, fetchImpl, { accept } = {}) {
   const response = await fetchImpl(url, {
     headers: {
       Accept: accept || 'application/json',
-      'User-Agent': 'OpenDeck'
+      'User-Agent': 'Decksmith'
     }
   });
 
@@ -356,7 +356,7 @@ async function fetchJson(url, fetchImpl, { accept } = {}) {
 async function fetchBinary(url, fetchImpl) {
   const response = await fetchImpl(url, {
     headers: {
-      'User-Agent': 'OpenDeck'
+      'User-Agent': 'Decksmith'
     }
   });
 

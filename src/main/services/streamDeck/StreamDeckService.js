@@ -296,7 +296,7 @@ class StreamDeckService {
     const hints = [];
 
     if (!this.driverStatus.available) {
-      hints.push('Install dependencies with npm install before launching OpenDeck.');
+      hints.push('Install dependencies with npm install before launching Decksmith.');
     }
 
     if (process.platform === 'linux') {

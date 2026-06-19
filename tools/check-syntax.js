@@ -17,9 +17,9 @@ const filesToCheck = [
   'src/main/services/streamDeck/StreamDeckService.js',
   'src/renderer/main.mjs',
   'src/renderer/previewRenderer.mjs',
-  'plugins/com.linuxstreamdeck.core/index.js',
-  'plugins/com.linuxstreamdeck.demo.hello/index.js',
-  'plugins/com.linuxstreamdeck.obs/index.js'
+  'plugins/io.decksmith.core/index.js',
+  'plugins/io.decksmith.demo.hello/index.js',
+  'plugins/io.decksmith.obs/index.js'
 ];
 
 for (const relativeFile of filesToCheck) {

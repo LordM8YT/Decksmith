@@ -251,7 +251,7 @@ function normalizeConfigFields(configFields) {
 }
 
 async function readPluginSourceMetadata(pluginRoot) {
-  const metadataPath = path.join(pluginRoot, '.opendeck-source.json');
+  const metadataPath = path.join(pluginRoot, '.decksmith-source.json');
 
   try {
     const metadataRaw = await fs.readFile(metadataPath, 'utf8');

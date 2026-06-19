@@ -1,4 +1,4 @@
-# OpenDeck Architecture
+# Decksmith Architecture
 
 ## Current Choice
 

@@ -1,8 +1,8 @@
 {
-  "id": "com.linuxstreamdeck.demo.hello",
+  "id": "io.decksmith.demo.hello",
   "name": "Hello Actions",
   "version": "0.1.0",
-  "description": "Sample plugin showing the minimal action contract for OpenDeck.",
+  "description": "Sample plugin showing the minimal action contract for Decksmith.",
   "actions": [
     {
       "id": "hello-world",

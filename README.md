@@ -1,128 +1,124 @@
-# OpenDeck Alpha Foundation
+# Decksmith Alpha Foundation
 
-OpenDeck is a Linux-first, open-source alternative to the Elgato Stream Deck app, with two early priorities:
+Decksmith is a Linux-first, open-source alternative to the Elgato Stream Deck app.
 
-- a polished desktop UI that feels intentionally designed, not purely utilitarian
-- a plugin system that is simple enough for independent developers to understand in minutes
+This alpha is focused on two things first:
 
-The repo now contains the first alpha foundation for an Electron-based desktop app, including built-in core actions, live OBS Studio control, and a Fedora-friendly Linux packaging path.
+- a polished desktop UI that feels like a real app, not a rough utility
+- a plugin API simple enough that independent developers can build actions quickly
 
-## Why Electron First
+The current build already includes live OBS Studio control, a drag-and-drop deck editor, built-in core actions, and GitHub-importable plugins.
 
-Electron is the best fit for the first milestone because the main process can talk directly to Node-based HID libraries while the renderer stays free to build a rich drag-and-drop interface in plain web technologies.
+## Screenshots
 
-This foundation keeps the entire app in JavaScript while leaving room to revisit Tauri later if footprint becomes a bigger concern than runtime simplicity.
+### Main Workspace
 
-## What Is Included
+![Decksmith main workspace](.github/readme/decksmith-overview.png)
 
-- `electron/`
-  - Electron entrypoint and preload bridge.
-- `src/main/`
-  - Device discovery and rendering service backed by `@elgato-stream-deck/node`.
-  - Plugin loader that scans `/plugins` for folders containing `manifest.json` and `index.js`.
-  - Persistent layout state and OBS connection settings stored in the app data directory.
-  - OBS WebSocket service for scene discovery and scene switching.
-- `src/renderer/`
-  - Desktop UI with an OBS connection panel, plugin palette, drag-and-drop deck grid, and key inspector.
-  - Canvas-based previews that can be sent directly to hardware as raw RGBA buffers.
-- `build/`
-  - Electron Builder icon assets and Linux RPM post-install scripts.
-- `plugins/com.linuxstreamdeck.demo.hello/`
-  - Example plugin showing the minimum viable developer experience.
-- `plugins/com.linuxstreamdeck.core/`
-  - Built-in system actions for opening URLs, launching apps, and running commands.
-- `plugins/com.linuxstreamdeck.obs/`
-  - Built-in OBS Studio actions for scenes, audio, streaming, recording, and studio mode.
-- `docs/architecture.md`
-  - Structural overview and next-step recommendations.
-- `CONTRIBUTING.md`
-  - Contributor workflow, setup, and PR expectations.
+### Key Inspector
 
-## Quick Start
+![Decksmith key inspector](.github/readme/decksmith-key-inspector.png)
+
+## Start Here
+
+If you want to try the app locally, this is the fastest path.
+
+### 1. Install dependencies
 
 ```bash
 npm install
+```
+
+### 2. Launch the desktop app
+
+```bash
 npm start
 ```
 
-If you ever update native HID dependencies and need a manual Electron-native refresh, run:
+If Electron-native HID dependencies ever need a manual refresh on your machine, run:
 
 ```bash
 npm run install:app-deps
 ```
 
-If no Stream Deck is attached, the app boots into a mock 15-key deck so plugin authors can still iterate on the UI and API.
+### 3. Boot with or without hardware
 
-If a real Stream Deck is attached, physical button presses now trigger assigned actions directly on the hardware.
+If no Stream Deck is connected, Decksmith starts with a mock 15-key deck so you can still test the UI and plugin flow.
 
-## Fedora Alpha Packaging
+If a real Stream Deck is connected, Decksmith detects it, adapts the deck grid to the connected model, and lets physical button presses trigger assigned actions.
 
-The repo now ships with an Electron Builder path for Linux alpha builds:
+### 4. Connect OBS Studio
+
+Open OBS Studio and make sure the built-in WebSocket server is enabled.
+
+Then in Decksmith:
+
+1. Open the OBS connection panel.
+2. Enter the host, port, and password from OBS.
+3. Connect and let the app load scenes and inputs.
+
+OBS Studio includes obs-websocket by default in OBS `28.0.0` and later.
+
+### 5. Assign your first action
+
+The current alpha already supports a live-useful first setup:
+
+1. Select a key in the deck UI.
+2. Open the action browser.
+3. Choose an action such as `OBS Studio -> Switch Scene`.
+4. Configure that action in the inspector under the deck UI.
+5. Trigger it either from the app preview or from the physical Stream Deck.
+
+### 6. Test Linux packages
+
+For Fedora and other RPM-friendly distros:
 
 ```bash
 npm run dist:linux:fedora
 ```
 
-That produces:
+This produces:
 
-- an `.rpm` package for Fedora and other RPM-based desktops
-- an `.AppImage` fallback for quick portable testing
+- a Linux `.rpm`
+- a Linux `.AppImage`
 
-As of June 17, 2026, the AppImage build has been verified from WSL2 Ubuntu. The RPM path is configured and builds up to the final packaging step, but requires `rpmbuild` to be installed on the Linux builder machine.
+Detailed distro notes live in `docs/fedora-alpha.md` and `docs/linux-compatibility.md`.
 
-Detailed Fedora notes live in `docs/fedora-alpha.md`.
+### 7. Test the Windows portable build
 
-## Built-In Alpha Actions
+```bash
+npm run dist:win
+```
 
-The current alpha now includes two built-in action tracks:
-
-- `Core Actions`
-  - open a URL or custom protocol
-  - launch an app or executable path
-  - run a shell command with a timeout
-- `OBS Studio`
-  - switch scenes
-  - mute or unmute inputs
-  - start or stop streaming
-  - start or stop recording
-  - toggle source visibility
-  - control studio mode transitions
-
-## OBS Live Control
-
-The current alpha includes a first live-useful OBS path:
-
-- connect to OBS Studio over its built-in WebSocket endpoint
-- fetch available scenes
-- assign the bundled `OBS Studio -> Switch Scene` action to any key
-- choose the target scene in the key inspector
-- trigger the action either from the UI or by pressing the physical Stream Deck key
-
-OBS Studio ships with obs-websocket built in on OBS 28.0.0 and later.
+This produces a portable Windows `.exe` in `dist/`.
 
 ## GitHub Releases
 
-The workflow at `.github/workflows/alpha-release.yml` now builds Linux alpha artifacts on version tags like `v0.1.0-alpha.4`, uploads them to Actions, and can publish them to a GitHub pre-release.
+Version tags such as `v0.1.0-alpha` trigger `.github/workflows/alpha-release.yml`.
 
-## Plugin Contract
+That workflow currently publishes:
+
+- a Linux `.rpm` for Fedora and other RPM-based desktops
+- a Linux `.AppImage` for portable testing across distros
+- a Windows portable `.exe` for testers who want the app outside Linux
+
+## Plugin Tutorial
 
 In development, plugins live in `/plugins`.
 
-In a packaged app build:
+In packaged builds:
 
 - bundled plugins ship inside the app
 - user plugins are loaded from the app data plugin folder
 - plugins can be imported from GitHub links directly in the Plugins tab
-- marketplace JSON feeds can later point to plugin sources without changing the core import UI
+- future marketplace feeds can point to plugin sources without changing the core import UI
 
-That gives testers a writable plugin location even when OpenDeck is installed from an RPM.
-
-Required files:
+Every plugin needs:
 
 - `manifest.json`
 - `index.js`
 
-Minimal manifest example:
+Minimal manifest:
 
 ```json
 {
@@ -140,7 +136,7 @@ Minimal manifest example:
 }
 ```
 
-Minimal plugin entry:
+Minimal entry script:
 
 ```js
 module.exports.activate = async ({ registerAction }) => {
@@ -153,20 +149,78 @@ module.exports.activate = async ({ registerAction }) => {
 };
 ```
 
-## Hardware Notes
+Example plugins already in the repo:
 
-The app targets `@elgato-stream-deck/node`, which wraps the HID transport and key rendering pipeline for Stream Deck devices. On Linux, users will still need the correct `udev` rules so their session can access the hardware device.
+- `plugins/io.decksmith.demo.hello/`
+- `plugins/io.decksmith.core/`
+- `plugins/io.decksmith.obs/`
 
-For cross-distro support, the repo now includes Linux-specific guidance and portable `udev` rules in:
+## Linux Hardware Access
 
-- `linux/udev/60-opendeck-user.rules`
-- `linux/udev/60-opendeck-headless.rules.example`
+Decksmith targets `@elgato-stream-deck/node`, which handles HID transport and key rendering for Stream Deck devices.
+
+On Linux, hardware access still depends on correct `udev` permissions. The repo includes cross-distro guidance and example rules in:
+
+- `linux/udev/60-decksmith-user.rules`
+- `linux/udev/60-decksmith-headless.rules.example`
 - `docs/linux-compatibility.md`
 - `docs/fedora-alpha.md`
 
+## Project Layout
+
+- `electron/`
+  - Electron entrypoint and preload bridge.
+- `src/main/`
+  - Device discovery and rendering service backed by `@elgato-stream-deck/node`.
+  - Plugin loader that scans `/plugins` for folders containing `manifest.json` and `index.js`.
+  - Persistent layout state and OBS connection settings stored in the app data directory.
+  - OBS WebSocket service for scene discovery and scene switching.
+- `src/renderer/`
+  - Desktop UI with an OBS connection panel, plugin palette, drag-and-drop deck grid, and key inspector.
+  - Canvas-based previews that can be sent directly to hardware as raw RGBA buffers.
+- `build/`
+  - Electron Builder icon assets and Linux RPM post-install scripts.
+- `docs/architecture.md`
+  - Structural overview and next-step recommendations.
+- `CONTRIBUTING.md`
+  - Contributor workflow, setup, and PR expectations.
+
+## Why Electron First
+
+Electron is the best fit for the current milestone because the main process can talk directly to Node-based HID libraries while the renderer stays free to build a polished desktop UI in plain web technologies.
+
+This keeps the whole app in JavaScript for now while still leaving room to revisit Tauri later if footprint matters more than implementation speed.
+
+## Features
+
+### Built-in Alpha Actions
+
+- `Core Actions`
+  - open a URL or custom protocol
+  - launch an app or executable path
+  - run a shell command with a timeout
+- `OBS Studio`
+  - switch scenes
+  - mute or unmute inputs
+  - start or stop streaming
+  - start or stop recording
+  - toggle source visibility
+  - control studio mode transitions
+
+### Included in the current alpha
+
+- hardware-aware Stream Deck grid that adapts to the connected device
+- mock deck mode when no hardware is attached
+- drag-and-drop key assignment flow
+- key inspector below the main deck UI
+- built-in OBS connection and scene discovery
+- GitHub plugin import flow
+- Fedora-friendly Linux packaging path
+- Windows portable build path
+
 ## License
 
-OpenDeck is licensed under `GPL-3.0-or-later`.
+Decksmith is licensed under `GPL-3.0-or-later`.
 
 That means forks and redistributed modified versions must stay under the same GPL family terms, keep notices intact, and make their source available under the same license when they distribute the app.
 
@@ -174,4 +228,4 @@ Open source licenses still allow commercial redistribution, so the thing that st
 
 ## Contributing
 
-If you want to help build OpenDeck, start with `CONTRIBUTING.md`.
+If you want to help build Decksmith, start with `CONTRIBUTING.md`.

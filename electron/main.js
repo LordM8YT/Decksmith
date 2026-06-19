@@ -36,7 +36,7 @@ async function bootstrap() {
 }
 
 app.whenReady().then(bootstrap).catch((error) => {
-  console.error('Failed to start OpenDeck:', error);
+  console.error('Failed to start Decksmith:', error);
   app.exit(1);
 });
 

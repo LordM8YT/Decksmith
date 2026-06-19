@@ -1,6 +1,6 @@
-# Contributing to OpenDeck
+# Contributing to Decksmith
 
-OpenDeck is meant to be a practical, creator-focused Linux Stream Deck app that stays easy to hack on.
+Decksmith is meant to be a practical, creator-focused Linux Stream Deck app that stays easy to hack on.
 
 Contributions are welcome for:
 
